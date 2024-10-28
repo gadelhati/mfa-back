@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.auth</groupId>
+	<artifactId>mfa</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>mfa</name>
+	<description>Spring Boot authentication project</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>21</java.version>
+		<springframework.version>3.3.5</springframework.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	<dependencies>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--   https://mvnrepository.com/artifact/org.mapstruct/mapstruct   -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.5.5.Final</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.projectlombok/lombok  -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.34</version>
+			<scope>provided</scope>
+		</dependency>
+		<!--   https://mvnrepository.com/artifact/org.postgresql/postgresql   -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.4</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!--   https://mvnrepository.com/artifact/net.postgis/postgis-jdbc   -->
+		<dependency>
+			<groupId>net.postgis</groupId>
+			<artifactId>postgis-jdbc</artifactId>
+			<version>2024.1.0</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/org.apache.commons/commons-lang3  -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.17.0</version>
+		</dependency>
+		<!--  https://mvnrepository.com/artifact/commons-codec/commons-codec  -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+
+		<!--         vulnerabilities -->
+
+		<!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.12.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<!--   depending on your project   -->
+					<target>${java.version}</target>
+					<!--   depending on your project   -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+						<!--   other annotation processors   -->
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.30</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

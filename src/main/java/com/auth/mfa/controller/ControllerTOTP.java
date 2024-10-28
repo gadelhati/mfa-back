@@ -1,0 +1,24 @@
+package com.auth.mfa.controller;
+
+import com.auth.mfa.model.User;
+import com.auth.mfa.service.ServiceTOTP;
+import com.auth.mfa.service.ServiceUser;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RestController @RequestMapping("/totp") @AllArgsConstructor
+public class ControllerTOTP {
+
+    private final ServiceUser serviceUser;
+    private final ServiceTOTP serviceTOTP;
+
+    @GetMapping("")
+    public String resetTOTP(@Valid @RequestBody User user) throws Throwable {
+        return serviceUser.resetTOTP(user.getUsername());
+    }
+    @PostMapping("/{totpKey}")
+    public boolean validateTOTP(@PathVariable int totpKey, @Valid @RequestBody User user) {
+        return serviceTOTP.validateTOTP(user.getUsername(), totpKey);
+    }
+}
