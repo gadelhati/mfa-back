@@ -7,13 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Collection;
 import java.util.UUID;
 
 @Getter @UniqueUsername
 @UniqueEmail
-public class DTORequestUser {
+public class DTORequestUser extends RepresentationModel<DTORequestUser> {
 
     private UUID id;
     @NotNull(message = "{not.null}") @NotBlank(message = "{not.blank}") @HasLength
