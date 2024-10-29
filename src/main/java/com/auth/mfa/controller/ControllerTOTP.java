@@ -1,13 +1,13 @@
 package com.auth.mfa.controller;
 
-import com.auth.mfa.model.User;
+import com.auth.mfa.persistence.model.User;
 import com.auth.mfa.service.ServiceTOTP;
 import com.auth.mfa.service.ServiceUser;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RestController @RequestMapping("/totp") @AllArgsConstructor
+@RestController @RequestMapping("/totp") @RequiredArgsConstructor
 public class ControllerTOTP {
 
     private final ServiceUser serviceUser;

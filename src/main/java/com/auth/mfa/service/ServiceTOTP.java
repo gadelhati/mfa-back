@@ -1,9 +1,9 @@
 package com.auth.mfa.service;
 
 import com.auth.mfa.exception.MissingTOTPKeyAuthenticatorException;
-import com.auth.mfa.model.User;
-import com.auth.mfa.repository.RepositoryUser;
-import lombok.AllArgsConstructor;
+import com.auth.mfa.persistence.model.User;
+import com.auth.mfa.persistence.repository.RepositoryUser;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base32;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,14 +18,14 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-@Service @AllArgsConstructor
+@Service @RequiredArgsConstructor
 public class ServiceTOTP {
 
     private final RepositoryUser repositoryUser;
     private final Environment env;
 
     public boolean validateTOTP(String userName, Integer totpKey) {
-        User user = repositoryUser.getReferenceById(userName);
+        User user = repositoryUser.findByUsername(userName).get();
         String secret = user.getSecret();
         if (StringUtils.hasText(secret)) {
             if (totpKey != null) {

@@ -1,19 +1,19 @@
 package com.auth.mfa.controller;
 
-import com.auth.mfa.model.User;
+import com.auth.mfa.persistence.payload.request.DTORequestUser;
+import com.auth.mfa.persistence.payload.response.DTOResponseUser;
 import com.auth.mfa.service.ServiceUser;
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RestController @RequestMapping("/user") @AllArgsConstructor
+@RestController @RequestMapping("/user") @RequiredArgsConstructor
 public class ControllerUser {
 
     private final ServiceUser serviceUser;
 
     @PostMapping("")
-    public @ResponseBody User create(@RequestBody User user) {
-        User savedUser = serviceUser.create(user);
-        savedUser.setPassword("");
-        return savedUser;
+    public @ResponseBody DTOResponseUser create(@Valid @RequestBody DTORequestUser dtoRequestUser) {
+        return serviceUser.create(dtoRequestUser);
     }
 }
