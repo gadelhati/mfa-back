@@ -36,7 +36,7 @@ public class ConfigurationSecurity {
                 .exceptionHandling(Customizer.withDefaults())
                 .sessionManagement((session) -> session .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET, "/login", "/logout", "/error", "/style").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/signUp", "/signIn", "/logout", "/error", "/style").permitAll()
                         .requestMatchers(HttpMethod.GET, "/totp/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/totp/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/**").permitAll()
@@ -44,7 +44,7 @@ public class ConfigurationSecurity {
                         .requestMatchers("/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin((login) -> login
-                        .loginPage("/login")
+                        .loginPage("/signIn")
                         .defaultSuccessUrl("/")
                         .failureForwardUrl("/error")
                 )
