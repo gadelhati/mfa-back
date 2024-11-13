@@ -36,6 +36,6 @@ public class ConfigurationOpenAPI {
                                 .url("https://choosealicense.com/licenses/mit/")))
                 .servers(List.of(
                         new Server().url(devUrl).description("Server URL in Development environment"),
-                        new Server().url(prodUrl).description("Server URL in Itemion environment")));
+                        new Server().url(prodUrl).description("Server URL in Item environment")));
     }
 }
