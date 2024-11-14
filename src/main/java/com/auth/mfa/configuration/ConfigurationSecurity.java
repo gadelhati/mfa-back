@@ -36,7 +36,7 @@ public class ConfigurationSecurity {
                 .exceptionHandling(Customizer.withDefaults())
                 .sessionManagement((session) -> session .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET, "/signUp", "/signIn", "/logout", "/error", "/style").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/signUp", "/signIn", "/logout", "/error", "/css/**", "/js/**", "/image/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/totp/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/totp/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/**").permitAll()

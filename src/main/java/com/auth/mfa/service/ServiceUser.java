@@ -24,7 +24,7 @@ import java.util.UUID;
 import static org.springframework.data.domain.ExampleMatcher.matching;
 
 @Service @RequiredArgsConstructor
-public class ServiceUser implements ServiceInterface<DTOResponseUser, DTORequestUser> {
+public class ServiceUser implements ServiceInterface<User, DTORequestUser, DTOResponseUser> {
 
     private final RepositoryUser repositoryUser;
     private final RepositoryRole repositoryRole;
@@ -41,7 +41,7 @@ public class ServiceUser implements ServiceInterface<DTOResponseUser, DTORequest
         return MapStruct.MAPPER.toDTO(repositoryUser.save(user));
     }
     @Override
-    public Page<DTOResponseUser> retrieve(Pageable pageable, String value) {
+    public Page<DTOResponseUser> retrieve(Pageable pageable, String value, Class<User> entityClass) {
         User object = new User();
         ExampleMatcher exampleMatcher = matching().withIgnoreNullValues().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         try {
