@@ -1,0 +1,29 @@
+section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("/src/assets/image/kl_14.jpg");
+    background-position: center center;
+    background-size: cover;
+}
+article {
+    padding: 5rem 0rem 5rem 0;
+    border-radius: 1rem;
+    height: 20rem;
+    width: 18rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 13px 28px 0px rgba(0,0,0,0.79);
+    backdrop-filter: blur(1rem);
+}
+article img {
+    padding-bottom: 2.5rem;
+}
+article button {
+    margin: 2em;
+}
+.rotate {
+    animation: spin 4s linear infinite;
+}
