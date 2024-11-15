@@ -17,13 +17,19 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
+- [x] refresh token
+- [ ] implements array of filters on retrieve
 - [ ] @PostFilter(hasPermission('')), hasAuthority('Admin')
+- [x] configure logs
 #### in concept
 - [ ] service to provide sidebar access
 - [x] change application.properties to [dev using h2, and prod using postgres]
 - [ ] add Internationalization to ValidationMessages.properties
-- [ ] service to provide color palete
+- [ ] service to provide color palette
 - [x] improve refresh token
+- [ ] define request rate limiting: X-Rate-Limit-Limit, X-Rate-Limit-Limit-Reset and X-Rate-Limit-Limit-Remaining  
+- [ ] implements dependency management
+- [ ] implements continuous integration
 
 ## Summary
 * [How to work with this project](#how-to-work-with-this-project)
