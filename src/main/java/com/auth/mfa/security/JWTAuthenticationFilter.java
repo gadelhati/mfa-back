@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    @Value("${app.version}")
+    private String version;
     public final JWTGenerator jwtGenerator;
     public final ServiceCustomUserDetails serviceCustomUserDetails;
 
@@ -29,6 +32,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 .filter(jwtGenerator::validateToken)
                 .map(jwtGenerator::getUsernameFromJWT)
                 .ifPresent(username->authenticateUser(username, request));
+        response.addHeader("X-API-Version", version);
         filterChain.doFilter(request, response);
     }
     private Optional<String> getJWTFromRequest(HttpServletRequest request) {
