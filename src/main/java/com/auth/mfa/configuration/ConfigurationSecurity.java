@@ -4,6 +4,8 @@ import com.auth.mfa.security.JWTAuthenticationFilter;
 import com.auth.mfa.security.JWTGenerator;
 import com.auth.mfa.service.ServiceCustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +29,8 @@ public class ConfigurationSecurity {
 
     public final JWTGenerator jwtGenerator;
     public final ServiceCustomUserDetails serviceCustomUserDetails;
+    @Value("${application.public.path}")
+    private String path;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,11 +40,10 @@ public class ConfigurationSecurity {
                 .exceptionHandling(Customizer.withDefaults())
                 .sessionManagement((session) -> session .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET, "/signUp", "/signIn", "/logout", "/error", "/css/**", "/js/**", "/image/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/totp/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/totp/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, ArrayUtils.addAll(path.split(","))).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/**", "/signUp", "/signIn").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/totp/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/totp/**").permitAll()
                         .requestMatchers("/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin((login) -> login
