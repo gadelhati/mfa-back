@@ -30,7 +30,7 @@ public class ServiceTOTP {
         if (StringUtils.hasText(secret)) {
             if (totpKey != null) {
                 try {
-                    if (!verifyCode(secret, totpKey, Integer.parseInt(env.getRequiredProperty("mfa.application.time")))) {
+                    if (!verifyCode(secret, totpKey, Integer.parseInt(env.getRequiredProperty("application.time")))) {
                         System.out.printf("Code %d was not valid", totpKey);
                         throw new BadCredentialsException(
                                 "Invalid TOTP code");

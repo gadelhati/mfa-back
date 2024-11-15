@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${app.version}")
+    @Value("${application.version}")
     private String version;
     public final JWTGenerator jwtGenerator;
     public final ServiceCustomUserDetails serviceCustomUserDetails;

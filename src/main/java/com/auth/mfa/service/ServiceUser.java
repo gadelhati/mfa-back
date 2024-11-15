@@ -92,6 +92,6 @@ public class ServiceUser implements ServiceInterface<User, DTORequestUser, DTORe
     }
     public String resetTOTP(String userName) {
         User user = repositoryUser.findByUsername(userName).get();
-        return String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", userName, userName + "@auth.com", user.getSecret(), env.getRequiredProperty("mfa.application.name"));
+        return String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", userName, userName + "@auth.com", user.getSecret(), env.getRequiredProperty("application.name"));
     }
 }

@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 public class JWTGenerator {
     private static final Logger logger = Logger.getLogger(JWTGenerator.class.getName());
 
-    @Value("${app.jwtIssuer}")
+    @Value("${application.jwtIssuer}")
     private String issuer;
-    @Value("${app.jwtAudience}")
+    @Value("${application.jwtAudience}")
     private String audience;
     private final SecretKey secretKey = new SecretKeySpec(new byte[64], "HmacSHA512");
 
