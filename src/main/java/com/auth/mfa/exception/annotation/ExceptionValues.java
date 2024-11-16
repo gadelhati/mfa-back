@@ -11,26 +11,26 @@ import java.util.Objects;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { ExceptionRange.ValidatorExceptionRange.class })
+@Constraint(validatedBy = { ExceptionValues.ValidatorExceptionValues.class })
 @Documented
-public @interface ExceptionRange {
+public @interface ExceptionValues {
 
     String message() default "{not.valid}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
-    int[] value() default {};
+    String[] value() default {};
 
-    class ValidatorExceptionRange implements ConstraintValidator<ExceptionRange, Integer> {
+    class ValidatorExceptionValues implements ConstraintValidator<ExceptionValues, String> {
 
-        private int[] values;
+        private String[] values;
 
         @Override
-        public void initialize(ExceptionRange constraintAnnotation) {
+        public void initialize(ExceptionValues constraintAnnotation) {
             this.values = constraintAnnotation.value();
         }
         @Override
-        public boolean isValid(Integer value, ConstraintValidatorContext context) {
-            return Objects.isNull(value) || Arrays.stream(values).anyMatch(validValue -> validValue == value);
+        public boolean isValid(String value, ConstraintValidatorContext context) {
+            return Objects.isNull(value) || Arrays.asList(values).contains(value);
         }
     }
 }
