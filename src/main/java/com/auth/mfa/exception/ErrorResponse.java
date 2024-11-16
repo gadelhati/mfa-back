@@ -17,8 +17,8 @@ public class ErrorResponse {
     private int statusCode;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date timestamp;
-    private String stackTrace;
-    private String description;
+//    private String stackTrace;
+//    private String description;
     private List<ErrorObject> errors;
 
     public void addValidationError(String field, String message){
@@ -30,7 +30,7 @@ public class ErrorResponse {
     public ErrorResponse(HttpStatusCode httpStatusCode, String stackTrace, String description) {
         this.timestamp = new Date();
         this.statusCode = httpStatusCode.value();
-        this.stackTrace = stackTrace;
-        this.description = description;
+//        this.stackTrace = stackTrace;
+//        this.description = description;
     }
 }
