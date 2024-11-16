@@ -21,6 +21,7 @@ Authentication and authorization.
 - [ ] implements array of filters on retrieve
 - [ ] @PostFilter(hasPermission('')), hasAuthority('Admin')
 - [x] configure logs
+- [ ] shorter error message
 #### in concept
 - [ ] service to provide sidebar access
 - [x] change application.properties to [dev using h2, and prod using postgres]
