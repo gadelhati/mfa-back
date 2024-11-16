@@ -20,12 +20,18 @@ public @interface UniqueNameRole {
     String message() default "{unique}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
+    String label();
 
     class ValidatorUniqueNameRole implements ConstraintValidator<UniqueNameRole, DTORequestRole> {
 
+        private String values;
         @Autowired
         private ServiceRole serviceRole;
 
+        @Override
+        public void initialize(UniqueNameRole constraintAnnotation) {
+            this.values = constraintAnnotation.label();
+        }
         @Override
         public boolean isValid(DTORequestRole value, ConstraintValidatorContext context) {
             return !Validator.isNull(value.getName()) && !serviceRole.existsByName(value.getName()) ||

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.util.UUID;
 
-@Getter @UniqueNameRole
+@Getter @UniqueNameRole(label = "name")
 public class DTORequestRole {
 
     private UUID id;
