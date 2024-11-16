@@ -17,8 +17,9 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
-- [x] refresh token
-- [x] configure logs
+- [x] improve refresh token
+- [x] improve logs
+- [x] improve privileges
 - [ ] implements array of filters on retrieve
 - [ ] @PostFilter(hasPermission('')), hasAuthority('Admin')
 
