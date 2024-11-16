@@ -15,10 +15,10 @@ import java.util.Objects;
 @Documented
 public @interface ExceptionRange {
 
-    int[] value() default {};
     String message() default "{not.range}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
+    int[] value() default {};
 
     class ValidatorExceptionRange implements ConstraintValidator<ExceptionRange, Integer> {
 
