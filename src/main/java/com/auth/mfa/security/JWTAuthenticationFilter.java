@@ -29,7 +29,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         getJWTFromRequest(request)
-                .filter(jwtGenerator::validateToken)
+                .filter(jwtGenerator::validateJWT)
                 .map(jwtGenerator::getUsernameFromJWT)
                 .ifPresent(username->authenticateUser(username, request));
         response.addHeader("X-API-Version", version);

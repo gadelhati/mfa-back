@@ -10,5 +10,6 @@ public class DTOResponseAuth {
 
     private String accessToken;
     private String tokenType = "Bearer ";
+    private String refreshToken;
     private List<String> roles;
 }

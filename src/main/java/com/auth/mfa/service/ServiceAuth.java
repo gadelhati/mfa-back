@@ -28,9 +28,10 @@ public class ServiceAuth {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dtoRequestAuth.getUsername(), dtoRequestAuth.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = serviceCustomUserDetails.loadUserByUsername(dtoRequestAuth.getUsername());
-        String token = jwtGenerator.generateToken(authentication);
+        String token = jwtGenerator.generateAccessToken(authentication);
+        String refreshToken = jwtGenerator.generateAccessToken(authentication);
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        return new DTOResponseAuth(token, "Bearer ", roles);
+        return new DTOResponseAuth(token, "Bearer ", refreshToken, roles);
     }
 
     public void logout(DTORequestAuth value) {

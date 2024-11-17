@@ -18,9 +18,11 @@ public class JWTGenerator {
     private String issuer;
     @Value("${application.jwtAudience}")
     private String audience;
+    @Value("${application.jwtExpiration}")
+    private Integer expiration;
     private final SecretKey secretKey = new SecretKeySpec(new byte[64], "HmacSHA512");
 
-    public String generateToken(Authentication authentication) {
+    public String generateAccessToken(Authentication authentication) {
         return Jwts.builder()
                 .audience().add(audience).and()
                 .header().add("typ", "JWT").and()
@@ -28,7 +30,19 @@ public class JWTGenerator {
                 .subject(authentication.getName())
                 .notBefore(new Date())
                 .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + SecurityConstants.JWT_EXPIRATION))
+                .expiration(new Date(new Date().getTime() + expiration))
+                .signWith(secretKey)
+                .compact();
+    }
+    public String generateRefreshToken(Authentication authentication) {
+        return Jwts.builder()
+                .audience().add(audience).and()
+                .header().add("typ", "JWT").and()
+                .issuer(issuer)
+                .subject(authentication.getName())
+                .notBefore(new Date())
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime() + expiration))
                 .signWith(secretKey)
                 .compact();
     }
@@ -39,11 +53,12 @@ public class JWTGenerator {
                 .getPayload()
                 .getSubject();
     }
-    public boolean validateToken(String token) {
+    public boolean validateJWT(String token) {
         try {
-            Jwts.parser()
+            Claims claims = Jwts.parser()
                     .verifyWith(secretKey).build()
-                    .parseSignedClaims(token);
+                    .parseSignedClaims(token).getPayload();
+            System.out.println("token payload" + claims);
             return true;
         } catch (SecurityException e) {
             logger.warning("Invalid JWT signature: " + e.getMessage());
