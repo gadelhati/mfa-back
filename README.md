@@ -17,7 +17,6 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
-- [x] improve refresh token
 - [x] improve logs
 - [x] improve privileges
 - [ ] implements array of filters on retrieve
