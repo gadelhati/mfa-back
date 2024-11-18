@@ -34,12 +34,12 @@ public class JWTGenerator {
                 .signWith(secretKey)
                 .compact();
     }
-    public String generateRefreshToken(Authentication authentication) {
+    public String generateRefreshToken(String subject) {
         return Jwts.builder()
                 .audience().add(audience).and()
                 .header().add("typ", "JWT").and()
                 .issuer(issuer)
-                .subject(authentication.getName())
+                .subject(subject)
                 .notBefore(new Date())
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime() + expiration))
@@ -58,7 +58,7 @@ public class JWTGenerator {
             Claims claims = Jwts.parser()
                     .verifyWith(secretKey).build()
                     .parseSignedClaims(token).getPayload();
-            System.out.println("token payload" + claims);
+            System.out.println("token payload: " + claims);
             return true;
         } catch (SecurityException e) {
             logger.warning("Invalid JWT signature: " + e.getMessage());

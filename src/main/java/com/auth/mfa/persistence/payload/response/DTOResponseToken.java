@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter @AllArgsConstructor
-public class DTOResponseAuth {
+public class DTOResponseToken {
 
+    private final String tokenType = "Bearer ";
     private String accessToken;
-    private String tokenType = "Bearer ";
-    private String refreshToken;
+    private UUID refreshToken;
     private List<String> roles;
 }

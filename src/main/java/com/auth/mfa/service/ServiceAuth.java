@@ -1,7 +1,9 @@
 package com.auth.mfa.service;
 
 import com.auth.mfa.persistence.payload.request.DTORequestAuth;
-import com.auth.mfa.persistence.payload.response.DTOResponseAuth;
+import com.auth.mfa.persistence.payload.request.DTORequestToken;
+import com.auth.mfa.persistence.payload.response.DTOResponseToken;
+import com.auth.mfa.persistence.repository.RepositoryToken;
 import com.auth.mfa.security.JWTGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service @RequiredArgsConstructor
@@ -21,20 +24,38 @@ public class ServiceAuth {
 
     private final AuthenticationManager authenticationManager;
     private final JWTGenerator jwtGenerator;
+    private final RepositoryToken repositoryToken;
+    private final ServiceToken serviceToken;
     @Autowired
     private ServiceCustomUserDetails serviceCustomUserDetails;
 
-    public DTOResponseAuth login(DTORequestAuth dtoRequestAuth) {
+    public DTOResponseToken login(DTORequestAuth dtoRequestAuth) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dtoRequestAuth.getUsername(), dtoRequestAuth.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = serviceCustomUserDetails.loadUserByUsername(dtoRequestAuth.getUsername());
         String token = jwtGenerator.generateAccessToken(authentication);
-        String refreshToken = jwtGenerator.generateAccessToken(authentication);
+        UUID refreshToken = UUID.randomUUID();
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        return new DTOResponseAuth(token, "Bearer ", refreshToken, roles);
+        serviceToken.create(new DTORequestToken(UUID.randomUUID(), "token", refreshToken, roles));
+        return new DTOResponseToken(token, refreshToken, roles);
     }
 
-    public void logout(DTORequestAuth value) {
-//        serviceRefreshToken.deleteByUserId(value.getUserId());
+    public DTOResponseToken refresh(DTORequestToken dtoRequestToken) {
+        if (repositoryToken.existsByRefreshToken(dtoRequestToken.getRefreshToken()) &&
+            jwtGenerator.validateJWT(dtoRequestToken.getAccessToken())) {
+            UserDetails userDetails = serviceCustomUserDetails.loadUserByUsername(
+                    jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken())
+            );
+            String tokenResponse = jwtGenerator.generateRefreshToken(jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken()));
+            UUID refreshToken = UUID.randomUUID();
+            List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            return new DTOResponseToken(tokenResponse, refreshToken, roles);
+        } else {
+            return null;
+        }
+    }
+
+    public void logout(DTORequestToken value) {
+        repositoryToken.deleteByRefreshToken(value.getRefreshToken());
     }
 }
