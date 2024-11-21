@@ -28,7 +28,6 @@ Authentication and authorization.
 - [ ] service to provide sidebar access
 - [ ] service to provide color palette
 - [x] change application.properties to [dev using h2, and prod using postgres]
-- [ ] add Internationalization to ValidationMessages.properties
 - [ ] define request rate limiting: X-Rate-Limit-Limit, X-Rate-Limit-Limit-Reset and X-Rate-Limit-Limit-Remaining
 
 ## Summary
