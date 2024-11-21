@@ -47,9 +47,8 @@ public class ServiceAuth {
                     jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken())
             );
             String tokenResponse = jwtGenerator.generateRefreshToken(jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken()));
-            UUID refreshToken = UUID.randomUUID();
             List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-            return new DTOResponseToken(tokenResponse, refreshToken, roles);
+            return new DTOResponseToken(tokenResponse, dtoRequestToken.getRefreshToken(), roles);
         } else {
             return null;
         }
