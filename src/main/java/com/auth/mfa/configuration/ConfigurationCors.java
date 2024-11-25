@@ -19,7 +19,7 @@ public class ConfigurationCors {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(ArrayUtils.addAll(path.split(",")))
+//                        .allowedOrigins(ArrayUtils.addAll(path.split(",")))
                         .allowedMethods("POST", "GET", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)
