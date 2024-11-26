@@ -29,8 +29,6 @@ public class ConfigurationSecurity {
 
     public final JWTGenerator jwtGenerator;
     public final ServiceCustomUserDetails serviceCustomUserDetails;
-    @Value("${application.public.path}")
-    private String path;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,14 +38,14 @@ public class ConfigurationSecurity {
                 .exceptionHandling(Customizer.withDefaults())
                 .sessionManagement((session) -> session .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET, ArrayUtils.addAll(path.split(","))).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/**", "/signUp", "/signIn").permitAll()
+                        .requestMatchers("/image/**", "/css/**", "/js/**", "/register", "/login", "/logout", "/error").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/**", "/register", "/login").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/totp/**").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/totp/**").permitAll()
                         .requestMatchers("/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin((login) -> login
-                        .loginPage("/signIn")
+                        .loginPage("/login")
                         .defaultSuccessUrl("/")
                         .failureForwardUrl("/error")
                 )

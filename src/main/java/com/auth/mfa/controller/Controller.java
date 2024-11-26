@@ -30,16 +30,16 @@ public class Controller {
         model.addAttribute("title", "Home");
         return "index";
     }
-    @GetMapping("/signUp")
+    @GetMapping("/register")
     public ModelAndView sigNup(Model model) {
-        ModelAndView modelAndView = new ModelAndView("signUp");
-        modelAndView.addObject("title", "SignUp");
+        ModelAndView modelAndView = new ModelAndView("register");
+        modelAndView.addObject("title", "Register");
         return modelAndView;
     }
-    @GetMapping("/signIn")
+    @GetMapping("/login")
     public ModelAndView signIn(Model model) {
-        ModelAndView modelAndView = new ModelAndView("signIn");
-        modelAndView.addObject("title", "SignIn");
+        ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject("title", "Login");
         return modelAndView;
     }
     @GetMapping("/error")
