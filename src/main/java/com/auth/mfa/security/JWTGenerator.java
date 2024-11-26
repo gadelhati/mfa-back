@@ -58,7 +58,6 @@ public class JWTGenerator {
             Claims claims = Jwts.parser()
                     .verifyWith(secretKey).build()
                     .parseSignedClaims(token).getPayload();
-            System.out.println("token payload: " + claims);
             return true;
         } catch (SecurityException e) {
             logger.warning("Invalid JWT signature: " + e.getMessage());
