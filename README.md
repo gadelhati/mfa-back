@@ -17,6 +17,7 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
+- [ ] sequence by mfa
 - [x] improve logs
 - [x] improve privileges
 - [ ] implements array of filters on retrieve

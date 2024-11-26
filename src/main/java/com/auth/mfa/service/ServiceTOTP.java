@@ -32,16 +32,13 @@ public class ServiceTOTP {
                 try {
                     if (!verifyCode(secret, totpKey, Integer.parseInt(env.getRequiredProperty("application.time")))) {
                         System.out.printf("Code %d was not valid", totpKey);
-                        throw new BadCredentialsException(
-                                "Invalid TOTP code");
+                        throw new BadCredentialsException("Invalid TOTP code");
                     }
                 } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-                    throw new InternalAuthenticationServiceException(
-                            "TOTP code verification failed", e);
+                    throw new InternalAuthenticationServiceException("TOTP code verification failed", e);
                 }
             } else {
-                throw new MissingTOTPKeyAuthenticatorException(
-                        "TOTP code is mandatory");
+                throw new MissingTOTPKeyAuthenticatorException("TOTP code is mandatory");
             }
         }
         return true;

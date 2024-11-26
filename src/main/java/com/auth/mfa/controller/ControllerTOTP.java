@@ -14,7 +14,7 @@ public class ControllerTOTP {
     private final ServiceTOTP serviceTOTP;
 
     @GetMapping("")
-    public String resetTOTP(@Valid @RequestBody User user) throws Throwable {
+    public String resetTOTP(@Valid @RequestBody User user) {
         return serviceUser.resetTOTP(user.getUsername());
     }
     @PostMapping("/{totpKey}")
