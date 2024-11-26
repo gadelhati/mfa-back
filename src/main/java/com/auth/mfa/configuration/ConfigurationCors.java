@@ -11,15 +11,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ConfigurationCors {
 
-    @Value("${application.public.path}")
-    private String path;
     @Bean
     public WebMvcConfigurer corsConfigure() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-//                        .allowedOrigins(ArrayUtils.addAll(path.split(",")))
+                        .allowedOrigins("http://localhost:5173")
                         .allowedMethods("POST", "GET", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)
