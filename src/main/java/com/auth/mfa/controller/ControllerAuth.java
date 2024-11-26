@@ -6,8 +6,10 @@ import com.auth.mfa.persistence.payload.response.DTOResponseToken;
 import com.auth.mfa.service.ServiceAuth;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController @RequestMapping("/auth") @RequiredArgsConstructor
 public class ControllerAuth {
@@ -22,13 +24,8 @@ public class ControllerAuth {
     public @ResponseBody DTOResponseToken refresh(@RequestBody @Valid DTORequestToken value){
         return serviceAuth.refresh(value);
     }
-    @PostMapping("/logout")
-    public @ResponseBody HttpStatus logout(@Valid @RequestBody DTORequestToken dtoRequestToken) {
-        try {
-            serviceAuth.logout(dtoRequestToken);
-            return HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
-        }
+    @DeleteMapping("/logout/{refreshToken}")
+    public ResponseEntity<DTOResponseToken> logout(@PathVariable("refreshToken") UUID refreshToken) {
+        return ResponseEntity.accepted().body(serviceAuth.logout(refreshToken));
     }
 }

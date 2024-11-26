@@ -1,5 +1,7 @@
 package com.auth.mfa.service;
 
+import com.auth.mfa.persistence.MapperInterface;
+import com.auth.mfa.persistence.model.Token;
 import com.auth.mfa.persistence.payload.request.DTORequestAuth;
 import com.auth.mfa.persistence.payload.request.DTORequestToken;
 import com.auth.mfa.persistence.payload.response.DTOResponseToken;
@@ -26,6 +28,8 @@ public class ServiceAuth {
     private final JWTGenerator jwtGenerator;
     private final RepositoryToken repositoryToken;
     private final ServiceToken serviceToken;
+    private final MapperInterface<Token, DTORequestToken, DTOResponseToken> mapperInterface;
+
     @Autowired
     private ServiceCustomUserDetails serviceCustomUserDetails;
 
@@ -50,11 +54,19 @@ public class ServiceAuth {
             List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return new DTOResponseToken(tokenResponse, dtoRequestToken.getRefreshToken(), roles);
         } else {
+            logout(dtoRequestToken.getRefreshToken());
             return null;
         }
     }
 
-    public void logout(DTORequestToken value) {
-        repositoryToken.deleteByRefreshToken(value.getRefreshToken());
+    public DTOResponseToken logout(UUID refreshToken) {
+        return repositoryToken.findByRefreshToken(refreshToken)
+                .map(token -> {
+                    repositoryToken.deleteById(token.getId());
+                    return mapperInterface.toDTO(token);
+                })
+                .orElseThrow(() -> {
+                    return null;
+                });
     }
 }
