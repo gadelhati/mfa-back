@@ -23,6 +23,7 @@ Authentication and authorization.
 - [ ] @PostFilter(hasPermission('')), hasAuthority('Admin')
 
 #### in concept
+- [ ] implements tests
 - [ ] implements continuous integration
 - [ ] implements dependency management
 - [ ] service to provide sidebar access
