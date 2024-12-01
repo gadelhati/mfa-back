@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController @RequestMapping("/privilege") @RequiredArgsConstructor
-public class ControllerPrivilege implements ControllerInterfaceLegacy<DTOResponsePrivilege, DTORequestPrivilege> {
+public class ControllerPrivilege implements ControllerInterface<DTOResponsePrivilege, DTORequestPrivilege> {
 
     private final ServicePrivilege servicePrivilege;
 

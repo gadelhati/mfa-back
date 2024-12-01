@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController @RequestMapping("/role") @RequiredArgsConstructor
-public class ControllerRole implements ControllerInterfaceLegacy<DTOResponseRole, DTORequestRole> {
+public class ControllerRole implements ControllerInterface<DTOResponseRole, DTORequestRole> {
 
     private final ServiceRole serviceRole;
 
