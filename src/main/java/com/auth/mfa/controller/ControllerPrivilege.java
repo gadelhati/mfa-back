@@ -29,25 +29,24 @@ public class ControllerPrivilege implements ControllerInterface<DTOResponsePrivi
         return ResponseEntity.created(uri).body(servicePrivilege.create(created));
     }
     @GetMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
-    public ResponseEntity<Page<DTOResponsePrivilege>> retrieve(@RequestParam(name="value", defaultValue = "", required = false) String value, Pageable pageable) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Class<Privilege> role = Privilege.class;
-        return ResponseEntity.ok().body(servicePrivilege.retrieve(pageable, value, role));
+    public ResponseEntity<Page<DTOResponsePrivilege>> retrieve(@RequestParam(name="value", defaultValue = "", required = false) String value, Pageable pageable){
+        return ResponseEntity.ok().body(servicePrivilege.retrieve(pageable, value, Privilege.class));
     }
     @PutMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
     public ResponseEntity<DTOResponsePrivilege> update(@RequestBody @Valid DTORequestPrivilege updated){
         return ResponseEntity.accepted().body(servicePrivilege.update(updated.getId(), updated));
     }
     @DeleteMapping("/{id}") @Override @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
-    public ResponseEntity<DTOResponsePrivilege> delete(@PathVariable("id") UUID id){
+    public ResponseEntity<DTOResponsePrivilege> deleteById(@PathVariable("id") UUID id){
         return ResponseEntity.accepted().body(servicePrivilege.delete(id));
     }
-    @DeleteMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
-    public ResponseEntity<HttpStatus> delete(){
-        try {
-            servicePrivilege.delete();
-            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @DeleteMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
+//    public ResponseEntity<HttpStatus> deleteAll(){
+//        try {
+//            servicePrivilege.delete();
+//            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }

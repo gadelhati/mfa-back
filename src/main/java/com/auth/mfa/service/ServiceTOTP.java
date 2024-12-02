@@ -1,10 +1,13 @@
 package com.auth.mfa.service;
 
+import com.auth.mfa.MfaApplication;
 import com.auth.mfa.exception.MissingTOTPKeyAuthenticatorException;
 import com.auth.mfa.persistence.model.User;
 import com.auth.mfa.persistence.repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base32;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -23,19 +26,21 @@ public class ServiceTOTP {
 
     private final RepositoryUser repositoryUser;
     private final Environment env;
+    private final static Logger LOGGER = LoggerFactory.getLogger(MfaApplication.class);
 
     public boolean validateTOTP(String userName, Integer totpKey) {
-        User user = repositoryUser.findByUsername(userName).get();
+        LOGGER.info("Validating TOTP for user: {}", userName);
+        User user = repositoryUser.findByUsername(userName).orElseThrow(() -> new BadCredentialsException("User not found"));
         String secret = user.getSecret();
         if (StringUtils.hasText(secret)) {
             if (totpKey != null) {
                 try {
                     if (!verifyCode(secret, totpKey, Integer.parseInt(env.getRequiredProperty("application.time")))) {
-                        System.out.printf("Code %d was not valid", totpKey);
+                        LOGGER.info("TOTP code {} was not valid for user {}", totpKey, userName);
                         throw new BadCredentialsException("Invalid TOTP code");
                     }
                 } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-                    throw new InternalAuthenticationServiceException("TOTP code verification failed", e);
+                    throw new InternalAuthenticationServiceException("Failed to verify TOTP code due to cryptographic error", e);
                 }
             } else {
                 throw new MissingTOTPKeyAuthenticatorException("TOTP code is mandatory");
@@ -60,15 +65,11 @@ public class ServiceTOTP {
         }
         return false;
     }
-    private long getCode(byte[] secret, long timeIndex)
-            throws NoSuchAlgorithmException, InvalidKeyException {
-        SecretKeySpec signKey = new SecretKeySpec(secret, "HmacSHA1");
-        ByteBuffer buffer = ByteBuffer.allocate(8);
-        buffer.putLong(timeIndex);
-        byte[] timeBytes = buffer.array();
-        Mac mac = Mac.getInstance("HmacSHA1");
-        mac.init(signKey);
-        byte[] hash = mac.doFinal(timeBytes);
+    private long getCode(byte[] secret, long timeIndex) throws NoSuchAlgorithmException, InvalidKeyException {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(secret, "HmacSHA256"));
+        ByteBuffer buffer = ByteBuffer.allocate(8).putLong(timeIndex);
+        byte[] hash = mac.doFinal(buffer.array());
         int offset = hash[19] & 0xf;
         long truncatedHash = hash[offset] & 0x7f;
         for (int i = 1; i < 4; i++) {

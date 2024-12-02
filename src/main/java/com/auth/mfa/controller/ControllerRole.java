@@ -29,25 +29,20 @@ public class ControllerRole implements ControllerInterface<DTOResponseRole, DTOR
         return ResponseEntity.created(uri).body(serviceRole.create(created));
     }
     @GetMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
-    public ResponseEntity<Page<DTOResponseRole>> retrieve(@RequestParam(name="value", defaultValue = "", required = false) String value, Pageable pageable) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Class<Role> role = Role.class;
-        return ResponseEntity.ok().body(serviceRole.retrieve(pageable, value, role));
+    public ResponseEntity<Page<DTOResponseRole>> retrieve(@RequestParam(name="value", defaultValue = "", required = false) String value, Pageable pageable){
+        return ResponseEntity.ok().body(serviceRole.retrieve(pageable, value, Role.class));
     }
     @PutMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
     public ResponseEntity<DTOResponseRole> update(@RequestBody @Valid DTORequestRole updated){
         return ResponseEntity.accepted().body(serviceRole.update(updated.getId(), updated));
     }
     @DeleteMapping("/{id}") @Override @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
-    public ResponseEntity<DTOResponseRole> delete(@PathVariable("id") UUID id){
+    public ResponseEntity<DTOResponseRole> deleteById(@PathVariable("id") UUID id){
         return ResponseEntity.accepted().body(serviceRole.delete(id));
     }
-    @DeleteMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
-    public ResponseEntity<HttpStatus> delete(){
-        try {
-            serviceRole.delete();
-            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @DeleteMapping("") @PreAuthorize("hasAnyRole('8652ec73-0a53-433c-93be-420f1d90c681')")
+//    public ResponseEntity<HttpStatus> deleteAll(){
+//        serviceRole.delete();
+//        return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+//    }
 }

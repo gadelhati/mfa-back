@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController @RequestMapping("/user") @RequiredArgsConstructor
 public class ControllerUser {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MfaApplication.class);
     private final ServiceUser serviceUser;
+    private final static Logger LOGGER = LoggerFactory.getLogger(MfaApplication.class);
 
     @PostMapping("")
     public @ResponseBody DTOResponseUser create(@Valid @RequestBody DTORequestUser dtoRequestUser) {

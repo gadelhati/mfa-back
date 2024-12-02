@@ -8,7 +8,6 @@ import com.auth.mfa.persistence.payload.response.DTOResponseToken;
 import com.auth.mfa.persistence.repository.RepositoryToken;
 import com.auth.mfa.security.JWTGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,17 +28,18 @@ public class ServiceAuth {
     private final RepositoryToken repositoryToken;
     private final ServiceToken serviceToken;
     private final MapperInterface<Token, DTORequestToken, DTOResponseToken> mapperInterface;
-
-    @Autowired
-    private ServiceCustomUserDetails serviceCustomUserDetails;
+    private final ServiceCustomUserDetails serviceCustomUserDetails;
 
     public DTOResponseToken login(DTORequestAuth dtoRequestAuth) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dtoRequestAuth.getUsername(), dtoRequestAuth.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = serviceCustomUserDetails.loadUserByUsername(dtoRequestAuth.getUsername());
-        String token = jwtGenerator.generateAccessToken(authentication);
+        String token = jwtGenerator.generateToken(authentication.getName());
         UUID refreshToken = UUID.randomUUID();
-        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        List<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
         serviceToken.create(new DTORequestToken(UUID.randomUUID(), "token", refreshToken, roles));
         return new DTOResponseToken(token, refreshToken, roles);
     }
@@ -50,7 +50,7 @@ public class ServiceAuth {
             UserDetails userDetails = serviceCustomUserDetails.loadUserByUsername(
                     jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken())
             );
-            String tokenResponse = jwtGenerator.generateRefreshToken(jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken()));
+            String tokenResponse = jwtGenerator.generateToken(jwtGenerator.getUsernameFromJWT(dtoRequestToken.getAccessToken()));
             List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return new DTOResponseToken(tokenResponse, dtoRequestToken.getRefreshToken(), roles);
         } else {
@@ -65,8 +65,8 @@ public class ServiceAuth {
                     repositoryToken.deleteById(token.getId());
                     return mapperInterface.toDTO(token);
                 })
-                .orElseThrow(() -> {
-                    return null;
-                });
+                .orElseThrow(() ->
+                    new IllegalArgumentException("Token not found.")
+                );
     }
 }

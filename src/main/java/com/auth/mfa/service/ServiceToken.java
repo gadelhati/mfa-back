@@ -53,8 +53,8 @@ public class ServiceToken implements ServiceInterface<Token,DTORequestToken, DTO
         repositoryToken.deleteById(id);
         return dtoResponseToken;
     }
-    @Override
-    public void delete() {
-        repositoryToken.deleteAll();
-    }
+//    @Override
+//    public void delete() {
+//        repositoryToken.deleteAll();
+//    }
 }
