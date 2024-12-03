@@ -4,6 +4,7 @@ import com.auth.mfa.MfaApplication;
 import com.auth.mfa.persistence.MapStruct;
 import com.auth.mfa.persistence.model.User;
 import com.auth.mfa.persistence.payload.request.DTORequestUser;
+import com.auth.mfa.persistence.payload.request.DTORequestUserPassword;
 import com.auth.mfa.persistence.payload.response.DTOResponseUser;
 import com.auth.mfa.persistence.repository.RepositoryRole;
 import com.auth.mfa.persistence.repository.RepositoryUser;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -107,13 +110,23 @@ public class ServiceUser implements ServiceInterface<User, DTORequestUser, DTORe
         return repositoryUser.existsByEmailIgnoreCaseAndIdNot(value, id);
     }
 
-    public DTOResponseUser changePassword(DTORequestUser updated){
+    public DTOResponseUser changePassword(DTORequestUserPassword updated){
         User user = repositoryUser.findById(updated.getId()).orElse(null);
+//        try {
+//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            if (principal instanceof UserDetails) {
+//                LOGGER.info(((UserDetails) principal).getUsername());
+//            }
+//        } catch (Exception e){
+//
+//        }
         Objects.requireNonNull(user).setPassword(passwordEncoder.encode(updated.getPassword()));
         return MapStruct.MAPPER.toDTO(repositoryUser.save(user));
     }
     public String resetTOTP(String userName) {
-        User user = repositoryUser.findByUsername(userName).get();
+        User user = repositoryUser.findByUsername(userName).orElse(null);
+        Objects.requireNonNull(user).setSecret(serviceTOTP.generateSecret());
+        repositoryUser.save(user);
         return String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", userName, userName + "@auth.com", user.getSecret(), env.getRequiredProperty("application.name"));
     }
 }
