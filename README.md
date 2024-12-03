@@ -17,6 +17,7 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
+- [ ] only the user or admin users change their passwords
 - [ ] add TOTP failed attempt limits
 - [ ] do not store TOTP secrets as plain text
 - [x] improve privileges
