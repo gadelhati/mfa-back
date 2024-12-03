@@ -17,13 +17,18 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
+- [ ] add TOTP failed attempt limits
+- [ ] do not store TOTP secrets as plain text
 - [x] improve privileges
 - [ ] implements array of filters on retrieve
 - [ ] @PostFilter(hasPermission('')), hasAuthority('Admin')
 
 #### in concept
-- [ ] implements tests
-- [ ] implements continuous integration
+- [ ] implements automated testing (Unit Testing, Integration Testing, Security Testing)
+- [ ] implements continuous integration, CI/CD with GitHub Actions
+- [ ] add Spring Boot Actuator to monitor metrics and endpoints
+- [ ] use Spring Cache with support for Redis or Caffeine
+- [ ] add a Dockerfile and docker-compose.yml to facilitate deployment
 - [ ] implements dependency management
 - [ ] service to provide sidebar access
 - [ ] service to provide color palette
