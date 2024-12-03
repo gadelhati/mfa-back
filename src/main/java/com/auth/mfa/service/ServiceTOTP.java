@@ -66,8 +66,8 @@ public class ServiceTOTP {
         return false;
     }
     private long getCode(byte[] secret, long timeIndex) throws NoSuchAlgorithmException, InvalidKeyException {
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(new SecretKeySpec(secret, "HmacSHA256"));
+        Mac mac = Mac.getInstance("HmacSHA1");
+        mac.init(new SecretKeySpec(secret, "HmacSHA1"));
         ByteBuffer buffer = ByteBuffer.allocate(8).putLong(timeIndex);
         byte[] hash = mac.doFinal(buffer.array());
         int offset = hash[19] & 0xf;
