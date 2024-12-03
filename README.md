@@ -17,7 +17,6 @@ Authentication and authorization.
 
 ### Roadmap
 #### in development
-- [ ] sequence by mfa
 - [x] improve privileges
 - [ ] implements array of filters on retrieve
 - [ ] @PostFilter(hasPermission('')), hasAuthority('Admin')
@@ -264,6 +263,9 @@ service tomcat start
 ### API download link
 
 > [https://github.com/gadelhati/mfa-back](https://github.com/gadelhati/mfa-back)
+
+### API QR Code 
+> otpauth://totp/username:username@auth.com?secret=secret&issuer=mfa
 
 ### API running locally
 

@@ -11,5 +11,6 @@ public class DTORequestAuth {
     private String username;
     @NotNull(message = "{not.null}") @NotBlank(message = "{not.blank}")
     private String password;
-    private String secret;
+    @NotNull(message = "{not.null}")
+    private Integer totpKey;
 }

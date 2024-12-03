@@ -29,9 +29,11 @@ public class ServiceAuth {
     private final ServiceToken serviceToken;
     private final MapperInterface<Token, DTORequestToken, DTOResponseToken> mapperInterface;
     private final ServiceCustomUserDetails serviceCustomUserDetails;
+    private final ServiceTOTP serviceTOTP;
 
     public DTOResponseToken login(DTORequestAuth dtoRequestAuth) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dtoRequestAuth.getUsername(), dtoRequestAuth.getPassword()));
+        serviceTOTP.validateTOTP(authentication.getName(), dtoRequestAuth.getTotpKey());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = serviceCustomUserDetails.loadUserByUsername(dtoRequestAuth.getUsername());
         String token = jwtGenerator.generateToken(authentication.getName());
